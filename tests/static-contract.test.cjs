@@ -31,9 +31,13 @@ test('offline shell includes every runtime script', () => {
 });
 
 test('published source contains no API secrets or private project paths', () => {
-  const names = ['index.html', 'styles.css', 'app.js', 'data-model.js', 'ai-provider.js', 'service-worker.js', 'manifest.webmanifest'];
+  const names = [
+    'index.html', 'styles.css', 'app.js', 'data-model.js', 'ai-provider.js', 'service-worker.js', 'manifest.webmanifest',
+    'gateway/contracts.mjs', 'gateway/prompts.mjs', 'gateway/providers.mjs', 'gateway/worker.mjs', 'gateway/wrangler.jsonc'
+  ];
   const source = names.map(read).join('\n');
   assert.doesNotMatch(source, /sk-[A-Za-z0-9_-]{16,}/);
-  assert.doesNotMatch(source, /DEEPSEEK_API_KEY\s*=/);
+  assert.doesNotMatch(source, /(?:OPENAI|DEEPSEEK)_API_KEY\s*=\s*[^\s"']+/);
+  assert.doesNotMatch(source, /LIFEOS_ACCESS_TOKEN\s*=\s*[^\s"']+/);
   assert.doesNotMatch(source, /firstVault|D:\\Document\\DataImmortality\\raw/i);
 });

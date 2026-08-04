@@ -14,6 +14,8 @@
 
 v0.2 的六大领域、数据模型、AI Provider、安全边界与实施顺序，见 [`DESIGN_V0.2.md`](DESIGN_V0.2.md)。
 
+真实 AI 接入前的 Gateway 托管决策、安全模型和 B0/B1/B2 验收门，见 [`DESIGN_V0.2B.md`](DESIGN_V0.2B.md)。
+
 ## 打开方式
 
 线上使用时直接打开 HTTPS 地址。本地预览可在 Windows 中双击 `start.cmd`，或直接用浏览器打开 `index.html`。

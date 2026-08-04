@@ -2,3 +2,5 @@
 Thumbs.db
 *.log
 .vite/
+.dev.vars
+gateway/.dev.vars

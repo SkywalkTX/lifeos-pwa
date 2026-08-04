@@ -17,6 +17,37 @@
     };
   }
 
+  function normalizeResponse(candidate) {
+    if (!candidate || typeof candidate !== 'object') throw new Error('AI Gateway 返回格式无效。');
+    const answer = typeof candidate.answer === 'string' ? candidate.answer.trim().slice(0, 8000) : '';
+    if (!answer) throw new Error('AI Gateway 没有返回回答。');
+    const suggestions = Array.isArray(candidate.suggestions)
+      ? candidate.suggestions.slice(0, 8).filter((item) => typeof item === 'string').map((item) => item.slice(0, 600))
+      : [];
+    const proposedActions = Array.isArray(candidate.proposedActions)
+      ? candidate.proposedActions.slice(0, 8).filter((item) => item && typeof item === 'object')
+      : [];
+    const provenance = candidate.provenance && typeof candidate.provenance === 'object'
+      ? candidate.provenance
+      : { provider: 'gateway', model: '', requestId: '' };
+    const usage = candidate.usage && typeof candidate.usage === 'object'
+      ? candidate.usage
+      : { inputTokens: 0, outputTokens: 0 };
+    return { answer, suggestions, proposedActions, provenance, usage };
+  }
+
+  function gatewayBaseUrl(value) {
+    if (typeof value !== 'string' || !value.trim()) return '';
+    try {
+      const url = new URL(value.trim());
+      const local = url.hostname === 'localhost' || url.hostname === '127.0.0.1';
+      if (url.protocol !== 'https:' && !(local && url.protocol === 'http:')) return '';
+      return url.href.replace(/\/$/, '');
+    } catch {
+      return '';
+    }
+  }
+
   class MockAIProvider {
     constructor() {
       this.id = 'mock';
@@ -48,26 +79,84 @@
   class GatewayAIProvider {
     constructor(options = {}) {
       this.id = options.id || 'gateway';
-      this.endpoint = options.endpoint || '';
+      this.endpoint = gatewayBaseUrl(options.endpoint);
+      this.fetchImpl = options.fetchImpl || root.fetch;
+      this.accessTokenProvider = typeof options.accessTokenProvider === 'function'
+        ? options.accessTokenProvider
+        : () => '';
     }
 
     async health() {
       if (!this.endpoint) return { ok: false, provider: this.id, reason: 'not-configured' };
-      return { ok: false, provider: this.id, reason: 'network-provider-disabled-in-v0.2a' };
+      if (typeof this.fetchImpl !== 'function') return { ok: false, provider: this.id, reason: 'fetch-unavailable' };
+      try {
+        const response = await this.fetchImpl(`${this.endpoint}/health`, { method: 'GET', credentials: 'omit' });
+        const data = await response.json();
+        return {
+          ok: response.ok && data?.ok === true,
+          provider: data?.provider || this.id,
+          ready: data?.ready === true,
+          version: data?.version || ''
+        };
+      } catch {
+        return { ok: false, provider: this.id, reason: 'unreachable' };
+      }
     }
 
-    async generate() {
-      throw new Error('真实 AI Gateway 尚未配置；API Key 不能保存在公开 PWA 中。');
+    async generate(rawRequest) {
+      const request = normalizeRequest(rawRequest);
+      if (!this.endpoint) throw new Error('真实 AI Gateway 尚未配置。');
+      if (typeof this.fetchImpl !== 'function') throw new Error('当前浏览器无法连接 AI Gateway。');
+      const accessToken = this.accessTokenProvider();
+      if (typeof accessToken !== 'string' || !accessToken) {
+        throw new Error('本次会话尚未提供 Gateway 访问令牌。');
+      }
+
+      const controller = typeof AbortController === 'function' ? new AbortController() : null;
+      const timeout = controller ? setTimeout(() => controller.abort(), 45000) : null;
+      try {
+        const response = await this.fetchImpl(`${this.endpoint}/v1/generate`, {
+          method: 'POST',
+          credentials: 'omit',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(request),
+          signal: controller?.signal
+        });
+        let data;
+        try {
+          data = await response.json();
+        } catch {
+          throw new Error('AI Gateway 返回了无法读取的响应。');
+        }
+        if (!response.ok) throw new Error(data?.error?.message || 'AI Gateway 暂时无法完成请求。');
+        return normalizeResponse(data);
+      } catch (error) {
+        if (error?.name === 'AbortError') throw new Error('AI Gateway 请求超时，本地记录仍然可用。');
+        throw error;
+      } finally {
+        if (timeout) clearTimeout(timeout);
+      }
     }
   }
 
   root.LifeOSAI = {
     TASK_TYPES,
     normalizeRequest,
+    normalizeResponse,
     MockAIProvider,
     GatewayAIProvider,
-    createProvider(settings = {}) {
-      if (settings.provider && settings.provider !== 'mock') return new GatewayAIProvider({ id: settings.provider, endpoint: settings.endpoint });
+    createProvider(settings = {}, runtime = {}) {
+      if (settings.provider && settings.provider !== 'mock') {
+        return new GatewayAIProvider({
+          id: settings.provider,
+          endpoint: runtime.endpoint || settings.endpoint,
+          accessTokenProvider: runtime.accessTokenProvider,
+          fetchImpl: runtime.fetchImpl
+        });
+      }
       return new MockAIProvider();
     }
   };
