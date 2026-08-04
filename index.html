@@ -104,16 +104,59 @@
         </header>
         <div class="area-workspace">
           <div class="area-grid" id="area-grid"></div>
-          <form class="area-editor" id="area-editor">
-            <div class="editor-title"><span class="editor-icon" id="editor-icon"></span><div><p class="panel-label">正在编辑</p><h2 id="editor-name"></h2></div></div>
-            <label for="area-focus">当前重点</label>
-            <input id="area-focus" name="focus" maxlength="100" placeholder="这一阶段最关心什么？">
-            <label for="area-next">最小下一步</label>
-            <input id="area-next" name="next" maxlength="100" placeholder="下一次打开时可以直接做什么？">
-            <label for="area-note">补充说明</label>
-            <textarea id="area-note" name="note" rows="4" maxlength="300" placeholder="可留空；不要为了完整而写。"></textarea>
-            <button class="primary-button" type="submit">保存这个领域</button>
-          </form>
+          <section class="area-detail" id="area-detail">
+            <header class="area-detail-header">
+              <div class="editor-title"><span class="editor-icon" id="editor-icon"></span><div><p class="panel-label">领域工作区</p><h2 id="editor-name"></h2><p id="editor-description"></p></div></div>
+              <span class="status-pill" id="area-record-count">尚无记录</span>
+            </header>
+
+            <form class="area-editor" id="area-editor">
+              <div class="area-editor-grid">
+                <label for="area-focus">当前重点<input id="area-focus" name="focus" maxlength="160" placeholder="这一阶段最关心什么？"></label>
+                <label for="area-next">最小下一步<input id="area-next" name="next" maxlength="160" placeholder="下一次打开时可以直接做什么？"></label>
+              </div>
+              <label for="area-note">补充说明<textarea id="area-note" name="note" rows="2" maxlength="600" placeholder="可留空；不要为了完整而写。"></textarea></label>
+              <button class="secondary-button" type="submit">保存领域概览</button>
+            </form>
+
+            <div class="area-stats" id="area-stats"></div>
+
+            <div class="area-detail-columns">
+              <section class="area-subpanel">
+                <div class="subpanel-heading"><div><p class="panel-label">ACTIVE</p><h3 id="item-panel-title">正在推进</h3></div><span id="item-count">0 项</span></div>
+                <form class="stack-form" id="item-form">
+                  <label for="item-title" id="item-title-label">新增项目或事项</label>
+                  <input id="item-title" maxlength="200" placeholder="写下名称">
+                  <label for="item-next">下一步</label>
+                  <input id="item-next" maxlength="200" placeholder="下一次可以直接做什么？">
+                  <label for="item-due">日期（可选）</label>
+                  <input id="item-due" type="date">
+                  <button class="primary-button" type="submit">加入这个领域</button>
+                </form>
+                <ul class="area-entry-list" id="item-list"></ul>
+              </section>
+
+              <section class="area-subpanel">
+                <div class="subpanel-heading"><div><p class="panel-label">QUICK LOG</p><h3 id="log-panel-title">快速记录</h3></div><span>保存事实</span></div>
+                <form class="stack-form" id="log-form">
+                  <label for="log-type">记录类型</label>
+                  <select id="log-type"></select>
+                  <label for="log-summary" id="log-summary-label">发生了什么</label>
+                  <input id="log-summary" maxlength="300" placeholder="一句话也可以">
+                  <label for="log-quantity" id="log-quantity-label">数量或进度（可选）</label>
+                  <input id="log-quantity" maxlength="80" placeholder="例如：30 分钟">
+                  <label for="log-note">补充说明（可选）</label>
+                  <textarea id="log-note" rows="3" maxlength="800" placeholder="只写你确认的内容。"></textarea>
+                  <button class="primary-button" type="submit">保存这条记录</button>
+                </form>
+              </section>
+            </div>
+
+            <section class="recent-panel">
+              <div class="subpanel-heading"><div><p class="panel-label">RECENT</p><h3>最近记录</h3></div><span id="log-count">0 条</span></div>
+              <ul class="recent-log-list" id="recent-log-list"></ul>
+            </section>
+          </section>
         </div>
       </section>
 
@@ -141,19 +184,24 @@
             <div class="source-rule"><strong>来源规则</strong><span>事实、转述、感受和推断必须分开。</span></div>
           </aside>
         </div>
+        <section class="recent-days-panel">
+          <div class="subpanel-heading"><div><p class="panel-label">RECENT DAYS</p><h2>最近七天</h2></div><span id="recent-days-count">0 天</span></div>
+          <ul class="recent-days-list" id="recent-days-list"></ul>
+        </section>
       </section>
 
       <section class="view" id="view-settings" data-view-panel="settings" hidden>
         <header class="page-header compact-header">
-          <div><p class="eyebrow">LOCAL DATA</p><h1>你的数据，仍然属于你。</h1><p class="lead">这个 demo 不联网，也不会自动修改 Obsidian Vault。</p></div>
+          <div><p class="eyebrow">LOCAL DATA</p><h1>你的数据，仍然属于你。</h1><p class="lead">工作台默认本地运行，不会自动修改 Obsidian Vault。</p></div>
         </header>
         <div class="settings-stack">
-          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-shield"/></svg></div><div><h2>浏览器本地状态</h2><p>当前填写内容仅保存在此浏览器的本地存储中，权威数据仍是 Markdown。</p></div><span class="status-pill">已启用</span></section>
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-shield"/></svg></div><div><h2>浏览器本地状态 · Schema v2</h2><p>多日记录、领域事项和领域日志保存在此浏览器；权威长期数据仍是 Markdown。</p></div><span class="status-pill">已启用</span></section>
           <section class="settings-row"><div class="settings-icon"><svg><use href="#i-sprout"/></svg></div><div><h2>安装到手机桌面</h2><p id="install-copy">用手机浏览器打开后，可以像 App 一样添加到主屏幕。</p></div><button type="button" class="secondary-button" id="install-button">查看方法</button></section>
           <section class="settings-row"><div class="settings-icon"><svg><use href="#i-layers"/></svg></div><div><h2>跨设备同步</h2><p>手机、工作电脑和家里电脑目前各自保存，尚未共用一份数据。</p></div><span class="status-pill is-pending">未连接</span></section>
-          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-download"/></svg></div><div><h2>导出演示快照</h2><p>下载一份 JSON，用于备份或转移当前 demo 状态。</p></div><button type="button" class="secondary-button" id="export-button">导出</button></section>
-          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-upload"/></svg></div><div><h2>导入演示快照</h2><p>只读取你主动选择的 JSON 文件。</p></div><label class="secondary-button file-button">导入<input type="file" id="import-input" accept="application/json,.json"></label></section>
-          <section class="roadmap-panel"><p class="panel-label">当前推荐路线</p><h2>手机优先 PWA + 最小同步层</h2><p>先把同一套界面做成手机和电脑浏览器都能打开的 PWA。只有确定需要跨设备共用数据后，再增加受控的同步服务；联网 AI 仍然作为独立、可关闭的能力。</p></section>
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-sparkle"/></svg></div><div><h2>AI Provider 边界</h2><p>当前使用本地 Mock。未来 GPT 或 DeepSeek 必须通过安全 Gateway，API Key 不进入浏览器和导出文件。</p></div><span class="status-pill is-pending">Mock</span></section>
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-download"/></svg></div><div><h2>导出完整备份</h2><p>下载包含多日记录、六大领域、Inbox 和版本信息的 JSON。</p></div><button type="button" class="secondary-button" id="export-button">导出</button></section>
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-upload"/></svg></div><div><h2>导入备份</h2><p>先校验并迁移你主动选择的 JSON；导入失败不会改变当前数据。</p></div><label class="secondary-button file-button">导入<input type="file" id="import-input" accept="application/json,.json"></label></section>
+          <section class="roadmap-panel"><p class="panel-label">v0.2 路线</p><h2>本地可用 → 安全 AI Gateway → 最小同步</h2><p>先让六大领域和多日记录真正可用。AI 与跨设备同步保持独立、可关闭；是否增加付费服务由真实使用决定。</p></section>
         </div>
       </section>
     </main>
@@ -187,6 +235,8 @@
   </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="data-model.js"></script>
+  <script src="ai-provider.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

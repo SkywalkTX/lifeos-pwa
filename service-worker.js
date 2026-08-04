@@ -1,8 +1,10 @@
-const CACHE_NAME = 'lifeos-pwa-v03';
+const CACHE_NAME = 'lifeos-pwa-v04';
 const APP_SHELL = [
   './',
   './index.html',
   './styles.css',
+  './data-model.js',
+  './ai-provider.js',
   './app.js',
   './manifest.webmanifest',
   './icon.svg',

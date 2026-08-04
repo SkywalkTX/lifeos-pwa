@@ -1,0 +1,9 @@
+{
+  "name": "lifeos-pwa",
+  "version": "0.2.0",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/*.test.cjs",
+    "check": "node --check data-model.js && node --check ai-provider.js && node --check app.js && node --check service-worker.js && npm test"
+  }
+}
