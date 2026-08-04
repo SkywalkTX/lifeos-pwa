@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#e8f0ea">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="LifeOS">
+  <title>LifeOS · 个人 AI 工作台</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg class="icon-sprite" aria-hidden="true">
+    <symbol id="i-sprout" viewBox="0 0 24 24"><path d="M7 20h10M12 20v-8M12 12C7 12 4 9 4 4c5 0 8 3 8 8Zm0 3c0-5 3-8 8-8 0 5-3 8-8 8Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></symbol>
+    <symbol id="i-review" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 16 4-5 3 3 5-7"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06-2.83 2.83-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1V21h-4v-.09a1.7 1.7 0 0 0-1.1-1.57 1.7 1.7 0 0 0-1.88.34l-.06.06-2.83-2.83.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1-.4H3v-4h.09A1.7 1.7 0 0 0 4.66 8.5a1.7 1.7 0 0 0-.34-1.88l-.06-.06 2.83-2.83.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1V3h4v.09a1.7 1.7 0 0 0 1.1 1.57 1.7 1.7 0 0 0 1.88-.34l.06-.06 2.83 2.83-.06.06A1.7 1.7 0 0 0 19.4 9c.1.4.3.75.6 1 .28.25.64.39 1 .4h.09v4H21a1.7 1.7 0 0 0-1.6.6Z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-body" viewBox="0 0 24 24"><path d="M6 5v14M18 5v14M3 8v8M21 8v8M6 12h12"/></symbol>
+    <symbol id="i-work" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2"/></symbol>
+    <symbol id="i-language" viewBox="0 0 24 24"><path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2v3M12 20l4-10 4 10M14 17h4"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14Z"/><path d="M8 7h8M8 11h6"/></symbol>
+    <symbol id="i-travel" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/></symbol>
+    <symbol id="i-chores" viewBox="0 0 24 24"><path d="M9 5h11M9 12h11M9 19h11"/><path d="m3 5 1 1 2-2m-3 8 1 1 2-2m-3 8 1 1 2-2"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="m12 3-1.5 4.5L6 9l4.5 1.5L12 15l1.5-4.5L18 9l-4.5-1.5L12 3Z"/><path d="m19 15-.8 2.2L16 18l2.2.8L19 21l.8-2.2L22 18l-2.2-.8L19 15Z"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 14h4l2 3h4l2-3h4"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V3m0 0 4 4m-4-4L8 7M5 21h14"/></symbol>
+  </svg>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark"><svg><use href="#i-sprout"/></svg></span>
+        <span class="brand-copy"><strong>LifeOS</strong><small>PERSONAL CONSOLE</small></span>
+      </div>
+
+      <nav class="primary-nav" aria-label="工作台页面">
+        <button class="nav-button is-active" type="button" data-view="today" aria-current="page"><svg><use href="#i-sun"/></svg><span>今天</span></button>
+        <button class="nav-button" type="button" data-view="areas"><svg><use href="#i-layers"/></svg><span>生活领域</span></button>
+        <button class="nav-button" type="button" data-view="review"><svg><use href="#i-review"/></svg><span>回顾</span></button>
+        <button class="nav-button" type="button" data-view="settings"><svg><use href="#i-settings"/></svg><span>本地数据</span></button>
+      </nav>
+
+      <div class="local-mode">
+        <svg><use href="#i-shield"/></svg>
+        <div><strong>本地优先模式</strong><span>记录只在当前设备</span></div>
+      </div>
+    </aside>
+
+    <main class="main-stage">
+      <section class="view is-visible" id="view-today" data-view-panel="today">
+        <header class="page-header">
+          <div><p class="eyebrow" id="today-date-label">今天</p><h1 id="today-greeting">你好，先接住今天。</h1><p class="lead" id="today-lead">不用填满，留下一点真实记录就够了。</p></div>
+          <div class="day-score"><span>今日体验</span><strong><span id="today-score-value">5</span><small>/10</small></strong></div>
+        </header>
+
+        <section class="system-status" aria-label="当前功能状态">
+          <div><span class="status-dot is-ready"></span><p><strong>本机记录</strong><small id="local-save-status">可以使用</small></p></div>
+          <div><span class="status-dot"></span><p><strong>跨设备同步</strong><small>尚未连接</small></p></div>
+          <div><span class="status-dot"></span><p><strong>真正的 AI</strong><small>尚未连接</small></p></div>
+        </section>
+
+        <section class="focus-panel">
+          <span class="focus-icon"><svg><use href="#i-moon"/></svg></span>
+          <div><p class="panel-label">今天最重要的一件事</p><h2 id="today-focus">现在还没有设定</h2><p>不确定也可以留空，工作台不会为了“完整”替你虚构。</p></div>
+          <span class="quiet-badge">待确认</span>
+        </section>
+
+        <div class="section-heading"><div><p class="panel-label">轻量收尾</p><h2>今晚只做这三步</h2></div><span id="closeout-progress">0 / 3</span></div>
+        <div class="closeout-list">
+          <label><input type="checkbox" data-closeout="experience"><span class="custom-check"><svg><use href="#i-check"/></svg></span><span><strong>记下一件发生的事</strong><small>一句话也可以</small></span></label>
+          <label><input type="checkbox" data-closeout="feeling"><span class="custom-check"><svg><use href="#i-check"/></svg></span><span><strong>留下今天的感受</strong><small>一个分数或一句话即可</small></span></label>
+          <label><input type="checkbox" data-closeout="tomorrow"><span class="custom-check"><svg><use href="#i-check"/></svg></span><span><strong>给明天留一个入口</strong><small>只需要一件最重要的事</small></span></label>
+        </div>
+
+        <div class="section-heading"><div><p class="panel-label">生活领域</p><h2>你在意的六个方向</h2></div><button class="text-button" type="button" data-go-view="areas">全部展开 →</button></div>
+        <div class="area-strip" id="today-area-strip"></div>
+
+        <section class="capture-panel">
+          <div class="capture-heading"><span class="capture-icon"><svg><use href="#i-inbox"/></svg></span><div><h2>快速捕获</h2><p>先接住，不急着分类。</p></div></div>
+          <form id="capture-form" class="capture-form">
+            <label class="sr-only" for="capture-input">记录临时想法或待办</label>
+            <input id="capture-input" type="text" maxlength="160" autocomplete="off" placeholder="突然想到了一件事…">
+            <button type="submit"><svg><use href="#i-plus"/></svg><span>记下来</span></button>
+          </form>
+          <p class="capture-feedback" id="capture-feedback" aria-live="polite">写完后会明确告诉你保存到了哪里。</p>
+          <ul class="capture-list" id="capture-list"></ul>
+        </section>
+      </section>
+
+      <section class="view" id="view-areas" data-view-panel="areas" hidden>
+        <header class="page-header compact-header">
+          <div><p class="eyebrow">LIFE AREAS</p><h1>一次只推进一个下一步。</h1><p class="lead">不用把每个领域都填满，空白也是当前状态。</p></div>
+        </header>
+        <div class="area-workspace">
+          <div class="area-grid" id="area-grid"></div>
+          <form class="area-editor" id="area-editor">
+            <div class="editor-title"><span class="editor-icon" id="editor-icon"></span><div><p class="panel-label">正在编辑</p><h2 id="editor-name"></h2></div></div>
+            <label for="area-focus">当前重点</label>
+            <input id="area-focus" name="focus" maxlength="100" placeholder="这一阶段最关心什么？">
+            <label for="area-next">最小下一步</label>
+            <input id="area-next" name="next" maxlength="100" placeholder="下一次打开时可以直接做什么？">
+            <label for="area-note">补充说明</label>
+            <textarea id="area-note" name="note" rows="4" maxlength="300" placeholder="可留空；不要为了完整而写。"></textarea>
+            <button class="primary-button" type="submit">保存这个领域</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="view" id="view-review" data-view-panel="review" hidden>
+        <header class="page-header compact-header">
+          <div><p class="eyebrow">REVIEW</p><h1>回看事实，再决定怎么调整。</h1><p class="lead">AI 观察只能是候选，不能直接变成“你就是怎样的人”。</p></div>
+        </header>
+        <div class="review-layout">
+          <form class="review-form" id="review-form">
+            <div class="review-score-row"><div><p class="panel-label">今日体验</p><h2><span id="review-score-value">5</span> / 10</h2></div><input id="review-score" type="range" min="1" max="10" value="5" aria-label="今日体验评分"></div>
+            <label for="review-fact">今天发生的一件事</label>
+            <textarea id="review-fact" rows="3" maxlength="300" placeholder="只写你确认发生过的事实。"></textarea>
+            <label for="review-feeling">我的感受</label>
+            <textarea id="review-feeling" rows="3" maxlength="300" placeholder="例如：整体蛮不错。"></textarea>
+            <label for="review-tomorrow">明天最重要的一步</label>
+            <input id="review-tomorrow" maxlength="120" placeholder="现在不确定也可以留空。">
+            <button class="primary-button" type="submit">保存回顾草稿</button>
+            <button class="ghost-button" type="button" id="markdown-button">下载 Daily Markdown 草稿</button>
+          </form>
+          <aside class="candidate-panel">
+            <span class="candidate-mark"><svg><use href="#i-sparkle"/></svg></span>
+            <p class="panel-label">AI 候选观察</p>
+            <h2>现在还没有足够证据形成规律。</h2>
+            <p>连续记录一至两周后，这里才会展示带日期来源的候选观察，并等待你确认。</p>
+            <div class="source-rule"><strong>来源规则</strong><span>事实、转述、感受和推断必须分开。</span></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="view" id="view-settings" data-view-panel="settings" hidden>
+        <header class="page-header compact-header">
+          <div><p class="eyebrow">LOCAL DATA</p><h1>你的数据，仍然属于你。</h1><p class="lead">这个 demo 不联网，也不会自动修改 Obsidian Vault。</p></div>
+        </header>
+        <div class="settings-stack">
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-shield"/></svg></div><div><h2>浏览器本地状态</h2><p>当前填写内容仅保存在此浏览器的本地存储中，权威数据仍是 Markdown。</p></div><span class="status-pill">已启用</span></section>
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-sprout"/></svg></div><div><h2>安装到手机桌面</h2><p id="install-copy">用手机浏览器打开后，可以像 App 一样添加到主屏幕。</p></div><button type="button" class="secondary-button" id="install-button">查看方法</button></section>
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-layers"/></svg></div><div><h2>跨设备同步</h2><p>手机、工作电脑和家里电脑目前各自保存，尚未共用一份数据。</p></div><span class="status-pill is-pending">未连接</span></section>
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-download"/></svg></div><div><h2>导出演示快照</h2><p>下载一份 JSON，用于备份或转移当前 demo 状态。</p></div><button type="button" class="secondary-button" id="export-button">导出</button></section>
+          <section class="settings-row"><div class="settings-icon"><svg><use href="#i-upload"/></svg></div><div><h2>导入演示快照</h2><p>只读取你主动选择的 JSON 文件。</p></div><label class="secondary-button file-button">导入<input type="file" id="import-input" accept="application/json,.json"></label></section>
+          <section class="roadmap-panel"><p class="panel-label">当前推荐路线</p><h2>手机优先 PWA + 最小同步层</h2><p>先把同一套界面做成手机和电脑浏览器都能打开的 PWA。只有确定需要跨设备共用数据后，再增加受控的同步服务；联网 AI 仍然作为独立、可关闭的能力。</p></section>
+        </div>
+      </section>
+    </main>
+
+    <aside class="assistant-panel" id="assistant-panel">
+      <div class="assistant-heading"><span class="assistant-status"></span><div><strong>AI 伙伴</strong><small>演示响应 · 未连接模型</small></div></div>
+      <div class="assistant-message" id="assistant-message">
+        <p>我还不了解今天发生了什么。可以先写下一件事实，或者只做一个很轻的收尾。</p>
+      </div>
+      <form class="assistant-question" id="assistant-question-form">
+        <label class="sr-only" for="assistant-question-input">向 AI 演示区提问</label>
+        <input id="assistant-question-input" type="text" maxlength="180" autocomplete="off" placeholder="随便问一点试试…">
+        <button type="submit">发送</button>
+      </form>
+      <p class="assistant-demo-note">当前只生成本地演示回应，不会把文字发送到网络。</p>
+      <div class="assistant-actions">
+        <button type="button" data-assistant-action="closeout"><svg><use href="#i-moon"/></svg><span><strong>整理今天</strong><small>把口述变成 Daily 草稿</small></span></button>
+        <button type="button" data-assistant-action="tomorrow"><svg><use href="#i-sun"/></svg><span><strong>安排明天</strong><small>只选一件最重要的事</small></span></button>
+        <button type="button" data-assistant-action="areas"><svg><use href="#i-layers"/></svg><span><strong>看看生活领域</strong><small>找出最值得推进的一块</small></span></button>
+      </div>
+      <div class="assistant-boundary"><svg><use href="#i-shield"/></svg><p><strong>当前是界面 demo</strong><span>这里的回复是预设演示，不会调用云端 AI，也不会读取你的其他文件。</span></p></div>
+    </aside>
+
+    <nav class="mobile-nav" aria-label="移动端页面">
+      <button class="mobile-nav-button is-active" type="button" data-view="today" aria-label="今天"><svg><use href="#i-sun"/></svg><span>今天</span></button>
+      <button class="mobile-nav-button" type="button" data-view="areas" aria-label="生活领域"><svg><use href="#i-layers"/></svg><span>领域</span></button>
+      <button class="mobile-nav-button" type="button" data-view="review" aria-label="回顾"><svg><use href="#i-review"/></svg><span>回顾</span></button>
+      <button class="mobile-nav-button" type="button" data-view="settings" aria-label="本地数据"><svg><use href="#i-settings"/></svg><span>数据</span></button>
+      <button class="mobile-nav-button" type="button" id="mobile-ai-button" aria-label="AI 伙伴"><svg><use href="#i-sparkle"/></svg><span>AI</span></button>
+    </nav>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="app.js"></script>
+</body>
+</html>
